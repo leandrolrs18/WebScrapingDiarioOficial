@@ -4,14 +4,13 @@ import time
 
 def get_all_links(driver):
     links = []
+    texto = []
     elements = driver.find_elements_by_tag_name('a')
     for elem in elements:
         href = elem.get_attribute("href")
+        texto.append(elem.text)
         links.append(href)
-    return links
-
-
-
+    return links, texto
 
 
 web = webdriver.Chrome()
@@ -25,20 +24,20 @@ Pchave.send_keys(PalavraChave)
 Submit = web.find_element_by_xpath('//*[@id="submit-busca-simples"]')
 Submit.click()
 time.sleep(60)
-#//*[@id="Form1"]/section[2]/div/div[2]/a[2]
-#t = web.find_element_by_xpath('//*[@id="dgDocumentos"]/tbody/tr[2]/td[1]/a')
-#t.click() 
+
 
 links = []
 linkcerto = []
-i = 0;
+texto = []
+i = 0
+
 while True:
-    links = get_all_links(web);
+    links, texto = get_all_links(web);
+    
     for link in links :
         if link is not None:
             if 'docview' in link:
                 linkcerto.append(link)
-                 #print(link)
     t = web.find_element_by_xpath('//*[@id="Form1"]/section[2]/div/div[2]/a[2]')
     t.click() 
     i = i + 1            
@@ -48,17 +47,14 @@ while True:
 print( linkcerto)
 print('link certo posição 1: ' , linkcerto[1])
 
+
+linkcerto = list(dict.fromkeys(linkcerto))
+print('aa', linkcerto)
+
 for link in linkcerto:
     web.get(link)
-    time.sleep(5)
-    
+    time.sleep(1)
 
-    
-# falta (1): abrir proximas páginas e guardar os links certos
-# falta (2): selecionar informações apenas de links corretos 
+
 # falta (3): pegar as informações  
 
-
-# (1) - opção 1 : pelo tempo interromper que abra a página repetida 
-# https://stackoverflow.com/questions/53955988/how-to-move-to-the-next-page-on-python-selenium
-# (1) - opção 2 : abir até a página máxima e não permitir salvar links repetidos 
