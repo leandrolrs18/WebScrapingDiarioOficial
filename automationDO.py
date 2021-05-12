@@ -50,11 +50,32 @@ print('link certo posição 1: ' , linkcerto[1])
 
 linkcerto = list(dict.fromkeys(linkcerto))
 print('aa', linkcerto)
-
+novolink = []
+conteudo = []
 for link in linkcerto:
-    web.get(link)
-    time.sleep(1)
+   # web.get(link)
+    d = link.split("data=", 1)[1]
+    n = d.split("&", 1)[0]
+    l = link.split("doc=", 1)[1]
+    novolink.append('http://diariooficial.rn.gov.br/dei/dorn3/documentos/00000001/'+n+'/'+l+'.htm')
+
+print(novolink)
+result = []
+resultado = ()
+for i in novolink:
+    web.get(i)
+    time.sleep(2)
+    conteud = web.find_elements_by_class_name("WordSection1")
+    for element in conteud:
+        print('dgr', element.text)
+        result.append(element.text)
+        
+    resultado = tuple(result)    
+
+print("resultado: ", result)
 
 
-# falta (3): pegar as informações  
-
+#salvar no excel resultado 
+# usar regex caso queira salvar de um jeito diferente 
+# aumentar o numero de pag extraidas
+# pra colocar funções e main: https://stackoverflow.com/questions/42880916/selenium-is-not-printing-the-text#comment72865499_42880935
