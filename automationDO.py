@@ -1,7 +1,9 @@
 from selenium import webdriver
 import time
 import xlsxwriter
-
+from datetime import  datetime
+from cx_Freeze import setup, Executable
+import sys
 
 def get_all_links(driver):
     links = []
@@ -63,12 +65,16 @@ def informacoes(links, web):
     return result      
 
 if __name__ == '__main__':
+    
+    now = datetime.now()
+    print(now)
+    now = str(now) +'.xlsx'
+    print(now)
     links = []
     texto = []
-    links, web = start("Extrato", 7)
-    texto = informacoes(links, web)
-
-    with xlsxwriter.Workbook('test2.xlsx') as workbook:
+    links, web = start("Extrato", 7)  # parametros: palavra de pesquisa e numero de pag pesquisadas 
+    texto = informacoes(links, web)  
+    with xlsxwriter.Workbook(now) as workbook:
         worksheet = workbook.add_worksheet()
 
         for row_num, data in enumerate(texto):
@@ -76,7 +82,5 @@ if __name__ == '__main__':
             worksheet.write_string(row_num, 0 , data)
 
 
-#salvar no excel resultado 
-# usar regex caso queira salvar de um jeito diferente 
-# aumentar o numero de pag extraidas
-# pra colocar funções e main: https://stackoverflow.com/questions/42880916/selenium-is-not-printing-the-text#comment72865499_42880935
+#falta criar um executável
+# usar regex caso queira salvar o texto de um jeito diferente 
