@@ -63,24 +63,26 @@ def informacoes(links, web):
             result.append(element.text)
            
     return result      
-
-if __name__ == '__main__':
+    
+def gerarExcel (texto):
     today = date.today()
-    #now = datetime.now()
-    print(today)
-    #now = str(now.strftime("%d/%m/%Y%H:%M:%S")) +'.xlsx'
     today = str(today) +'.xlsx'
     print(today)
-    links = []
-    texto = []
-    links, web = start("Extrato", 7)  # parametros: palavra de pesquisa e numero de pag pesquisadas 
-    texto = informacoes(links, web)  
     with xlsxwriter.Workbook(today) as workbook:
         worksheet = workbook.add_worksheet()
 
         for row_num, data in enumerate(texto):
             print(row_num, data)
             worksheet.write_string(row_num, 0 , data)
+
+if __name__ == '__main__':
+    
+    links = []
+    texto = []
+    links, web = start("Extrato", 7)  # parametros: palavra de pesquisa e numero de pag pesquisadas 
+    texto = informacoes(links, web)  
+    gerarExcel(texto)
+    
 
 
 #falta criar um executável
